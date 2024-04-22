@@ -8,7 +8,7 @@ Grupple is a website that allows users to either host group buys or join group b
 
 ![Grupple](https://github.com/KeearnM/Grupple/assets/75174570/a0f99887-e21c-47be-a8ca-8af2004df81b)
 
-##Planned Stack
+## Planned Stack
  - Flask
  - Postgres
  - React
