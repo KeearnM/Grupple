@@ -6,7 +6,7 @@ Grupple is a website that allows users to either host group buys or join group b
 
 ## ERD diagram for database
 
-![Grupple](https://github.com/KeearnM/Grupple/assets/75174570/a0f99887-e21c-47be-a8ca-8af2004df81b)
+![Grupple ERD](https://github.com/KeearnM/Grupple/assets/75174570/3f01db72-e4b5-49dd-a028-44b8e11ec42f)
 
 ## Planned Stack
  - Flask
