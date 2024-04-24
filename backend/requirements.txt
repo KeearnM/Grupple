@@ -8,3 +8,4 @@ marshmallow-sqlalchemy
 flask_bcrypt
 flask-jwt-extended
 flask_bcrypt
+flask_jwt_extended

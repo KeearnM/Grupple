@@ -4,14 +4,20 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from models.database import db, Base
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
+
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv("SECRET_KEY")
+
 db.init_app(app)
 bcrypt = Bcrypt(app)
+jwt = JWTManager(app)
 
 # Import models to ensure they are registered with SQLAlchemy
 from models.user import User
@@ -53,3 +59,25 @@ def add_user():
 
     return jsonify({"message": "new user added"}), 201
 
+
+@app.route('/login', methods=['POST'])
+def login():
+
+    data = request.get_json()
+    
+    email = data.get('email')
+    password = data.get('password')
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not bcrypt.check_password_hash(user.password, password):
+        return jsonify({"error":"Not authorised"}), 401
+    
+    access_token = create_access_token(identity=user.user_id)
+    return jsonify(access_token=access_token, msg="logged in"),200
+    
+
+# @app.route('/protected', methods=['GET'])
+# @jwt_required()
+# def protected():
+#     current_user = get_jwt_identity()
+#     return jsonify(logged_in_as=current_user), 200
