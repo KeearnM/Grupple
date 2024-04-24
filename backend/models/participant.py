@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey, BOOLEAN
-from .database import db
+from .database import Base
 
-class Participant(db.Model):
+class Participant(Base):
     __tablename__ = 'participant'
     participant_id = Column(Integer, primary_key=True)
     amount = Column(Integer)
