@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, DATE, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from .database import Base
+from models.database import db
 
-class Groupbuy(Base):
+class Groupbuy(db.Model):
     __tablename__ = 'groupbuy'
     groupbuy_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('app_user.user_id'))

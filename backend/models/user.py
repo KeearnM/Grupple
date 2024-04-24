@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, VARCHAR, BOOLEAN
-from .database import Base
+from .database import db
 
-class User(Base):
+class User(db.Model):
     __tablename__ = 'app_user'
     user_id = Column(Integer, primary_key=True)
     name = Column(VARCHAR(50))
