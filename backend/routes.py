@@ -3,7 +3,7 @@ from .models.user import User
 from .models.groupbuy import Groupbuy
 from .models.listing import Listing
 from .models.participant import Participant
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models.database import db
 from .app import app, bcrypt, jwt
 
@@ -14,7 +14,7 @@ def check():
 @app.route('/seed')
 def seed():
     try:
-        Base.metadata.create_all(bind=db.engine)
+        db.create_all()
         return 'Database tables created successfully'
     except Exception as e:
         return f'Error creating tables: {str(e)}', 500
@@ -58,8 +58,8 @@ def login():
     return jsonify(access_token=access_token, msg="logged in"),200
     
 
-# @app.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user = get_jwt_identity()
-#     return jsonify(logged_in_as=current_user), 200
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
