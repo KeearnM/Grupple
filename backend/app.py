@@ -1,23 +1,64 @@
 import os
+import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from models.database import db, Base
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token
-
 
 load_dotenv()
+
+CREATE_USERS_TABLE = ("""
+CREATE TABLE IF NOT EXISTS app_user (
+    user_id SERIAL PRIMARY KEY, 
+    name VARCHAR(50), 
+    email VARCHAR(50), 
+    password VARCHAR(50)
+)
+""")
+
+CREATE_GROUPBUY_TABLE = ("""
+CREATE TABLE IF NOT EXISTS groupbuy (
+    groupbuy_id SERIAL PRIMARY KEY, 
+    user_id INT, 
+    title VARCHAR(50), 
+    description TEXT,
+    start_date DATE,
+    end_date DATE,
+    FOREIGN KEY (user_id) REFERENCES app_user(user_id)
+)
+""")
+
+
+CREATE_LISTING_TABLE = ("""
+CREATE TABLE IF NOT EXISTS listing (
+    listing_id SERIAL PRIMARY KEY, 
+    groupbuy_id INT, 
+    product_name VARCHAR(50),
+    FOREIGN KEY (groupbuy_id) REFERENCES groupbuy(groupbuy_id)
+)
+""")
+
+
+CREATE_PARTICIPANTS_TABLE = ("""
+CREATE TABLE IF NOT EXISTS participants (
+    participants_id SERIAL PRIMARY KEY, 
+    amount INT, 
+    listing_id INT, 
+    user_id INT,
+    payment BOOLEAN,
+    FOREIGN KEY (listing_id) REFERENCES listing(listing_id),
+    FOREIGN KEY (user_id) REFERENCES app_user(user_id)
+)
+""")
+
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv("SECRET_KEY")
-
 db.init_app(app)
 bcrypt = Bcrypt(app)
-jwt = JWTManager(app)
 
 # Import models to ensure they are registered with SQLAlchemy
 from models.user import User
@@ -25,15 +66,20 @@ from models.groupbuy import Groupbuy
 from models.listing import Listing
 from models.participant import Participant
 
-@app.route('/')
+@app.get('/')
 def check():
     return 'Flask is working'
 
-@app.route('/seed')
-def seed():
+@app.post('/api/seed')
+def create_user_table():
     try:
-        Base.metadata.create_all(bind=db.engine)
-        return 'Database tables created successfully'
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_USERS_TABLE)
+            cursor.execute(CREATE_GROUPBUY_TABLE)
+            cursor.execute(CREATE_LISTING_TABLE)
+            cursor.execute(CREATE_PARTICIPANTS_TABLE)
+            connection.commit() # Commit the transaction
+            return jsonify({"message": "Table created successfully"}), 201
     except Exception as e:
         return f'Error creating tables: {str(e)}', 500
 
@@ -59,25 +105,3 @@ def add_user():
 
     return jsonify({"message": "new user added"}), 201
 
-
-@app.route('/login', methods=['POST'])
-def login():
-
-    data = request.get_json()
-    
-    email = data.get('email')
-    password = data.get('password')
-
-    user = User.query.filter_by(email=email).first()
-    if not user or not bcrypt.check_password_hash(user.password, password):
-        return jsonify({"error":"Not authorised"}), 401
-    
-    access_token = create_access_token(identity=user.user_id)
-    return jsonify(access_token=access_token, msg="logged in"),200
-    
-
-# @app.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user = get_jwt_identity()
-#     return jsonify(logged_in_as=current_user), 200
