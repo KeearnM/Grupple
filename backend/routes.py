@@ -136,25 +136,64 @@ def addParticipants():
     db.session.add(new_participant)
     db.session.commit()
 
+# @app.route('/groupbuy/participants', methods=['GET'])
+# @jwt_required()
+# def getGroupbuyParticipants():
+
+#     data = request.get_json()
+
+#     groupbuy_id = data.get('groupbuy_id')
+
+#     groupbuy = Groupbuy.query.filter(Groupbuy.groupbuy_id == groupbuy_id).first()
+
+#     if groupbuy:
+#         participants = []
+#         for listing in groupbuy.listings:
+#             for participant in listing.participants:
+#                 participants.append({
+#                     'participant_id': participant.participant_id,
+#                     'amount': participant.amount,
+#                     'payment': participant.payment
+#                 })
+#         return jsonify(participants)
+#     else:
+#         return jsonify({'error': 'groupbuy not found'})
+    
+
 @app.route('/groupbuy/participants', methods=['GET'])
 @jwt_required()
 def getGroupbuyParticipants():
-
     data = request.get_json()
+
+    if not data or 'groupbuy_id' not in data:
+        return jsonify({'error': 'groupbuy_id is required'}), 400
 
     groupbuy_id = data.get('groupbuy_id')
 
-    groupbuy = Groupbuy.query.filter(Groupbuy.groupbuy_id == groupbuy_id).first()
+    # Query to join Participant, User, and Listing tables
+    participants = db.session.query(
+        Participant.participant_id,
+        Participant.amount,
+        Participant.payment,
+        User.name.label('user_name'),
+        Listing.product_name.label('listing_name')
+    ).join(
+        User, Participant.user_id == User.user_id
+    ).join(
+        Listing, Participant.listing_id == Listing.listing_id
+    ).filter(
+        Participant.groupbuy_id == groupbuy_id
+    ).all()
 
-    if groupbuy:
-        participants = []
-        for listing in groupbuy.listings:
-            for participant in listing.participants:
-                participants.append({
-                    'participant_id': participant.participant_id,
-                    'amount': participant.amount,
-                    'payment': participant.payment
-                })
-        return jsonify(participants)
-    else:
-        return jsonify({'error': 'groupbuy not found'})
+    # Convert the query result to a list of dictionaries
+    participants_list = [
+        {
+            'participant_id': participant.participant_id,
+            'amount': participant.amount,
+            'payment': participant.payment,
+            'user_name': participant.user_name,
+            'listing_name': participant.listing_name
+        } for participant in participants
+    ]
+
+    return jsonify(participants_list)
