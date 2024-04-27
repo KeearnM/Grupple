@@ -63,3 +63,98 @@ def login():
 def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
+#new routes
+
+@app.route('/groupbuys', methods=['GET'])
+@jwt_required()
+def getAllGroupbuys():
+    allBuys = Groupbuy.query.all()
+
+    for i in allBuys:
+        return jsonify(groupbuy_id=i.groupbuy_id, user_id=i.user_id, title=i.title,
+                       description=i.description, start_date=i.start_date, end_date=i.end_data
+                       )
+    
+
+@app.route('/groupbuys', methods=['PUT'])
+@jwt_required()
+def addGroupBuy():
+
+    data = request.get_json()
+    user_id = data.get('user_id')
+    title = data.get('title')
+    description = data.get('description')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+
+    new_buy = Groupbuy(user_id=user_id, title=title, description=description,
+                       start_date=start_date, end_date=end_date)
+    db.session.add(new_buy)
+    db.session.commit()
+    return jsonify(msg="group buy added")
+
+@app.route('/listings', methods=['GET'])
+@jwt_required()
+def getListing():
+    
+    data = request.get_json()
+
+    groupbuy_id = data.get('groupbuy_id')
+
+    listings = Listing.query.filter_by(groupbuy_id=groupbuy_id)
+
+    for i in listings:
+        return jsonify(product_name=i.product_name)
+    
+@app.route('/listings', methods=['PUT'])
+@jwt_required()
+def addListing():
+
+    data = request.get_json()
+    
+    groupbuy_id = data.get('groupbuy_id')
+    product_name = data.get('product_name')
+
+    new_listing = Listing(groupbuy_id=groupbuy_id, product_name=product_name)
+    db.session.add(new_listing)
+    db.session.commit()
+    return jsonify('Listing added')
+
+@app.route('/participants', methods=['PUT'])
+@jwt_required()
+def addParticipants():
+
+    data = request.get_json()
+
+    amount = data.get('amount')
+    listing_id = data.get('listing_id')
+    user_id = data.get('user_id')
+    payment = data.get('payment', False)
+
+    new_participant = Participant(amount=amount, listing_id=listing_id, user_id=user_id, payment=payment)
+    db.session.add(new_participant)
+    db.session.commit()
+
+@app.route('/groupbuy/participants', methods=['GET'])
+@jwt_required()
+def getGroupbuyParticipants():
+
+    data = request.get_json()
+
+    groupbuy_id = data.get('groupbuy_id')
+
+    groupbuy = Groupbuy.query.filter(Groupbuy.groupbuy_id == groupbuy_id).first()
+
+    if groupbuy:
+        participants = []
+        for listing in groupbuy.listings:
+            for participant in listing.participants:
+                participants.append({
+                    'participant_id': participant.participant_id,
+                    'amount': participant.amount,
+                    'payment': participant.payment
+                })
+        return jsonify(participants)
+    else:
+        return jsonify({'error': 'groupbuy not found'})
