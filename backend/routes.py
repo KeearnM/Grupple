@@ -69,12 +69,24 @@ def protected():
 @app.route('/groupbuys', methods=['GET'])
 @jwt_required()
 def getAllGroupbuys():
-    allBuys = Groupbuy.query.all()
+    # Perform a join operation to fetch Groupbuy and related User data
+    allBuys = db.session.query(Groupbuy, User.name).join(User, Groupbuy.user_id == User.user_id).all()
 
-    for i in allBuys:
-        return jsonify(groupbuy_id=i.groupbuy_id, user_id=i.user_id, title=i.title,
-                       description=i.description, start_date=i.start_date, end_date=i.end_data
-                       )
+    if allBuys:
+        groupbuys = []
+        for groupbuy, user_name in allBuys:
+            groupbuys.append({
+                'groupbuy_id': groupbuy.groupbuy_id,
+                'user_name': user_name, # Use user_name instead of user_id
+                'title': groupbuy.title,
+                'description': groupbuy.description,
+                'start_date': groupbuy.start_date,
+                'end_date': groupbuy.end_date
+            })
+        return jsonify(groupbuys)
+    else:
+        return jsonify({'msg':'No groupbuys found'})
+
     
 
 @app.route('/groupbuys', methods=['PUT'])
@@ -182,7 +194,7 @@ def getGroupbuyParticipants():
     ).join(
         Listing, Participant.listing_id == Listing.listing_id
     ).filter(
-        Participant.groupbuy_id == groupbuy_id
+        Listing.groupbuy_id == groupbuy_id
     ).all()
 
     # Convert the query result to a list of dictionaries
