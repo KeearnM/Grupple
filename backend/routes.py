@@ -209,19 +209,61 @@ def getGroupbuyParticipants():
 
     return jsonify(participants_list)
 
-@app.route('/groupbuys/id/<int:user_id>')
-@jwt_required
-def get_groupbuys_by_user(user_id):
+@app.route('/groupbuys/id', methods=['GET'])
+@jwt_required()
+def get_groupbuys_by_user():
+    data = request.get_json()
+
+    if not data or 'user_id' not in data:
+        return jsonify({'error': 'user_id is required'}), 400
+
+    user_id = data.get('user_id')
+
+    # Query to join Participant, Listing, and Groupbuy tables
+    groupbuys = db.session.query(
+        Groupbuy.groupbuy_id,
+        Groupbuy.title,
+        Groupbuy.description,
+        Groupbuy.start_date,
+        Groupbuy.end_date
+    ).join(
+        Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
+    ).join(
+        Participant, Listing.listing_id == Participant.listing_id
+    ).filter(
+        Participant.user_id == user_id
+    ).all()
+
+    # Convert the query result to a list of dictionaries
+    groupbuys_list = [
+        {
+            'groupbuy_id': groupbuy.groupbuy_id,
+            'title': groupbuy.title,
+            'description': groupbuy.description,
+            'start_date': groupbuy.start_date,
+            'end_date': groupbuy.end_date
+        } for groupbuy in groupbuys
+    ]
+
+    return jsonify(groupbuys_list)
+
+@app.route('/participations/user/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_participations_by_user(user_id):
     # Query the Participant model for entries that match the given user ID
-    # Then, join this with the Listing and Groupbuy models to get the groupbuys
-    groupbuys = db.session.query(Groupbuy).\
-        join(Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id).\
-        join(Participant, Listing.listing_id == Participant.listing_id).\
+    participations = db.session.query(Participant).\
         filter(Participant.user_id == user_id).\
         all()
 
-    # Convert the result to a list of dictionaries for JSON serialization
-    groupbuys_list = [groupbuy.to_dict() for groupbuy in groupbuys]
+    # Convert the query result to a list of dictionaries
+    participations_list = [
+        {
+            'participant_id': participation.participant_id,
+            'amount': participation.amount,
+            'payment': participation.payment,
+            'groupbuy_title': participation.listing.groupbuy.title,
+            # Add other fields as needed
+        } for participation in participations
+    ]
 
-    # Return the result as JSON
-    return jsonify(groupbuys_list)
+    return jsonify(participations_list)
