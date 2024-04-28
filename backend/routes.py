@@ -208,3 +208,20 @@ def getGroupbuyParticipants():
     ]
 
     return jsonify(participants_list)
+
+@app.route('/groupbuys/id/<int:user_id>')
+@jwt_required
+def get_groupbuys_by_user(user_id):
+    # Query the Participant model for entries that match the given user ID
+    # Then, join this with the Listing and Groupbuy models to get the groupbuys
+    groupbuys = db.session.query(Groupbuy).\
+        join(Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id).\
+        join(Participant, Listing.listing_id == Participant.listing_id).\
+        filter(Participant.user_id == user_id).\
+        all()
+
+    # Convert the result to a list of dictionaries for JSON serialization
+    groupbuys_list = [groupbuy.to_dict() for groupbuy in groupbuys]
+
+    # Return the result as JSON
+    return jsonify(groupbuys_list)
