@@ -67,7 +67,6 @@ def protected():
 #new routes
 
 @app.route('/groupbuys', methods=['GET'])
-@jwt_required()
 def getAllGroupbuys():
     # Perform a join operation to fetch Groupbuy and related User data
     allBuys = db.session.query(Groupbuy, User.name).join(User, Groupbuy.user_id == User.user_id).all()
