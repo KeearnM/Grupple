@@ -55,7 +55,7 @@ def login():
         return jsonify({"error":"Not authorised"}), 401
     
     access_token = create_access_token(identity=user.user_id)
-    return jsonify(access_token=access_token, msg="logged in"),200
+    return jsonify(access_token=access_token, msg="logged in", user=user.user_id),200
     
 
 @app.route('/protected', methods=['GET'])
@@ -267,3 +267,15 @@ def get_participations_by_user(user_id):
     ]
 
     return jsonify(participations_list)
+
+@app.route('/groupbuy/<int:groupbuy_id>/listings')
+@jwt_required
+def get_groupbuy_listings(groupbuy_id):
+    groupbuy = Groupbuy.query.get(groupbuy_id)
+    if groupbuy is None:
+        return jsonify({"error": "Group buy not found"}), 404
+
+    # Manually convert each listing to a dictionary
+    listings = [{'listing_id': listing.listing_id, 'product_name': listing.product_name} for listing in groupbuy.listings]
+
+    return jsonify(listings)

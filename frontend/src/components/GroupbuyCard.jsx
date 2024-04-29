@@ -4,11 +4,12 @@ import styles from "./GroupbuyCard.module.css";
 const GroupbuyCard = (props) => {
   return (
     <div className={styles.cardWrapper}>
-      <div>{props.groupbuy.title}</div>
-      <div>{props.groupbuy.start_date}</div>
-      <div>{props.groupbuy.end_date}</div>
-      <div>Collection Point: None</div>
-      <div>Hosted by {props.groupbuy.user_name}</div>
+      <div className={styles.imageDiv}></div>
+      <div className={styles.title}>{props.groupbuy.title}</div>
+      <div className={styles.start_date}>{props.groupbuy.start_date}</div>
+      <div className={styles.end_date}>{props.groupbuy.end_date}</div>
+      <div className={styles.collectionPoint}>Collection Point: None</div>
+      <div className={styles.user}>Hosted by {props.groupbuy.user_name}</div>
     </div>
   );
 };

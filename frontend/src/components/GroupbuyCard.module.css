@@ -1,4 +1,16 @@
-.card-wrapper {
+.cardWrapper {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.imageDiv {
+  display: flex;
+  height: 50%;
+  background-color: aquamarine;
+}
+
+.title {
+  font-size: 30px;
 }
