@@ -4,4 +4,34 @@
   width: 100%;
   height: 10%;
   align-items: center;
+  justify-content: space-between;
+}
+
+.logoImg {
+  height: 100%;
+}
+
+.loginButton {
+  background-color: rgb(148, 122, 150);
+  color: white;
+  height: 50%;
+  width: 10%;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.loginButton:hover {
+  background-color: rgb(132, 113, 138);
+  transform: scale(1.1);
+}
+
+.leftDivWrapper {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 3%;
 }

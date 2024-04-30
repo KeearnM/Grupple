@@ -11,3 +11,13 @@ body,
   height: 100%;
   width: 100%;
 }
+
+.Banner {
+  height: 60%;
+}
+
+.BannerImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
