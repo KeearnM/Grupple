@@ -3,21 +3,17 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import GroupbuyDisplay from "./components/GroupbuyDisplay";
 import "./index.css";
-import Navbar from "./components/Navbar";
-import Test from "./components/Test";
-import banner from "./assets/banner.jpg";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <>
-      <Navbar></Navbar>
-      <div className="Banner">
-        <img className="BannerImage" src={banner}></img>
-      </div>
-      <GroupbuyDisplay></GroupbuyDisplay>
-      <Test></Test>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/details/:id" element={<ProductDetails />} /> */}
+      </Routes>
+    </Router>
   );
 }
 

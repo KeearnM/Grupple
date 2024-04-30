@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
-const Test = () => {
+const Login = () => {
   const { accessCode, setAccessCode, userId, setUserId } =
     useContext(UserContext);
 
@@ -35,21 +35,24 @@ const Test = () => {
 
   return (
     <div>
-      Email{" "}
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      ></input>
-      Password{" "}
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      ></input>
-      <button onClick={handleSubmit}>Submit</button>
+      Login
+      <div>
+        Email{" "}
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        ></input>
+        Password{" "}
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        ></input>
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 };
 
-export default Test;
+export default Login;

@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import GroupbuyDisplay from "../components/GroupbuyDisplay";
-import Test from "../components/Test";
-import banner from "./assets/banner.jpg";
+import Login from "../components/Login";
+import banner from "../assets/banner.jpg";
+import Modal from "../components/Modal";
+import { UserContext } from "../components/UserContext";
 
 const Home = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { accessCode, setAccessCode, userId, setUserId } =
+    useContext(UserContext);
+
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar accessCode={accessCode}></Navbar>
       <div className="Banner">
         <img className="BannerImage" src={banner}></img>
       </div>
       <GroupbuyDisplay></GroupbuyDisplay>
-      <Test></Test>
+      {isModalOpen && <Modal onClose={() => setModalOpen(false)}></Modal>}
+      <button onClick={() => setModalOpen(true)}>Open Login Modal</button>
+      <div>Access Code: {accessCode}</div>
     </>
   );
 };
