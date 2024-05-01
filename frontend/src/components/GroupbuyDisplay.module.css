@@ -5,6 +5,7 @@
   flex-direction: row;
   flex-flow: wrap;
   padding: 20px;
+  justify-content: center;
 }
 
 .cardWrap {

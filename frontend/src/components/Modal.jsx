@@ -22,7 +22,7 @@ function Modal({ children, onClose }) {
             Register
           </button>
         </div>
-        {activeTab === "login" && <Login />}
+        {activeTab === "login" && <Login onClose={onClose} />}
         {activeTab === "register" && <Register />}
         <button style={styles.closeButton} onClick={onClose}>
           X

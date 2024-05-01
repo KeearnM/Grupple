@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Navbar.module.css";
 import logo from "../assets/Logo.png";
+import { UserContext } from "./UserContext";
 
 const Navbar = (props) => {
+  const { accessCode, setAccessCode, userId, setUserId } =
+    useContext(UserContext);
+
   return (
     <div className={styles.Navbar}>
       <img src={logo} className={styles.logoImg}></img>
       <div className={styles.leftDivWrapper}>
         {props.accessCode ? (
-          <div>Welcome, User!</div> // Elements to show when access code is present
+          <>
+            <div className={styles.NavItem}>Host Page</div>
+            <div className={styles.NavItem}>Profile</div>
+            <button className={styles.Button} onClick={() => setAccessCode("")}>
+              Sign Out
+            </button>
+          </>
         ) : (
-          <button className={styles.loginButton}>Login</button> // Elements to show when access code is not present
+          // Elements to show when access code is present
+          <button
+            className={styles.loginButton}
+            onClick={() => props.setModalOpen(true)}
+          >
+            Login
+          </button> // Elements to show when access code is not present
         )}
       </div>
     </div>

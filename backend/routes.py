@@ -279,3 +279,31 @@ def get_groupbuy_listings(groupbuy_id):
     listings = [{'listing_id': listing.listing_id, 'product_name': listing.product_name} for listing in groupbuy.listings]
 
     return jsonify(listings)
+
+@app.route('/groupbuy/<int:groupbuy_id>', methods=['GET'])
+def get_groupbuy(groupbuy_id):
+    # Fetch the Groupbuy
+    groupbuy = db.session.query(Groupbuy).get(groupbuy_id)
+    if groupbuy is None:
+        return jsonify({"error": "Groupbuy not found"}), 404
+
+    # Fetch the Listings associated with the Groupbuy
+    listings = db.session.query(Listing).filter_by(groupbuy_id=groupbuy_id).all()
+
+    # Prepare the response
+    response = {
+        "groupbuy_id": groupbuy.groupbuy_id,
+        "title": groupbuy.title,
+        "description": groupbuy.description,
+        "start_date": groupbuy.start_date.isoformat(),
+        "end_date": groupbuy.end_date.isoformat(),
+        "listings": [
+            {
+                "listing_id": listing.listing_id,
+                "product_name": listing.product_name,
+                "participants_count": len(listing.participants)
+            } for listing in listings
+        ]
+    }
+
+    return jsonify(response)

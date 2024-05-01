@@ -13,14 +13,14 @@ const Home = () => {
 
   return (
     <>
-      <Navbar accessCode={accessCode}></Navbar>
+      <Navbar accessCode={accessCode} setModalOpen={setModalOpen}></Navbar>
       <div className="Banner">
         <img className="BannerImage" src={banner}></img>
       </div>
       <GroupbuyDisplay></GroupbuyDisplay>
       {isModalOpen && <Modal onClose={() => setModalOpen(false)}></Modal>}
-      <button onClick={() => setModalOpen(true)}>Open Login Modal</button>
-      <div>Access Code: {accessCode}</div>
+      {/* <button onClick={() => setModalOpen(true)}>Open Login Modal</button>
+      <div>Access Code: {accessCode}</div> */}
     </>
   );
 };

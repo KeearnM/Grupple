@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./GroupbuyCard.module.css";
+import { Link } from "react-router-dom";
 
 const GroupbuyCard = (props) => {
   return (
@@ -10,7 +11,11 @@ const GroupbuyCard = (props) => {
       <div className={styles.end_date}>{props.groupbuy.end_date}</div>
       <div className={styles.collectionPoint}>Collection Point: None</div>
       <div className={styles.user}>Hosted by {props.groupbuy.user_name}</div>
-      <button>View More</button>
+      <div>
+        <Link to={`/details/${props.groupbuy.groupbuy_id}`}>
+          <button>View More</button>
+        </Link>
+      </div>
     </div>
   );
 };
