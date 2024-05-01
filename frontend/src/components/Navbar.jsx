@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import styles from "./Navbar.module.css";
 import logo from "../assets/Logo.png";
 import { UserContext } from "./UserContext";
+import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   const { accessCode, setAccessCode, userId, setUserId } =
@@ -9,6 +10,7 @@ const Navbar = (props) => {
 
   return (
     <div className={styles.Navbar}>
+      <Link to={`/`}></Link>
       <img src={logo} className={styles.logoImg}></img>
       <div className={styles.leftDivWrapper}>
         {props.accessCode ? (

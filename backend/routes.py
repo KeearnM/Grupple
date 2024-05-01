@@ -42,7 +42,7 @@ def add_user():
     return jsonify({"message": "new user added"}), 201
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST']) #Used in login feature
 def login():
 
     data = request.get_json()
@@ -66,7 +66,7 @@ def protected():
 
 #new routes
 
-@app.route('/groupbuys', methods=['GET'])
+@app.route('/groupbuys', methods=['GET']) #Used in home page
 def getAllGroupbuys():
     # Perform a join operation to fetch Groupbuy and related User data
     allBuys = db.session.query(Groupbuy, User.name).join(User, Groupbuy.user_id == User.user_id).all()
@@ -209,43 +209,65 @@ def getGroupbuyParticipants():
 
     return jsonify(participants_list)
 
-@app.route('/groupbuys/id', methods=['GET'])
+# @app.route('/groupbuys/id', methods=['POST'])
+# @jwt_required()
+# def get_groupbuys_by_user():
+#     data = request.get_json()
+
+#     if not data or 'user_id' not in data:
+#         return jsonify({'error': 'user_id is required'}), 400
+
+#     user_id = data.get('user_id')
+
+#     # Query to join Participant, Listing, and Groupbuy tables
+#     groupbuys = db.session.query(
+#         Groupbuy.groupbuy_id,
+#         Groupbuy.title,
+#         Groupbuy.description,
+#         Groupbuy.start_date,
+#         Groupbuy.end_date
+#     ).join(
+#         Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
+#     ).join(
+#         Participant, Listing.listing_id == Participant.listing_id
+#     ).filter(
+#         Participant.user_id == user_id
+#     ).all()
+
+#     # Convert the query result to a list of dictionaries
+#     groupbuys_list = [
+#         {
+#             'groupbuy_id': groupbuy.groupbuy_id,
+#             'title': groupbuy.title,
+#             'description': groupbuy.description,
+#             'start_date': groupbuy.start_date,
+#             'end_date': groupbuy.end_date
+#         } for groupbuy in groupbuys
+#     ]
+
+#     return jsonify(groupbuys_list)
+
+@app.route('/groupbuys/<int:user_id>', methods=['GET']) #Used in home page post login
 @jwt_required()
-def get_groupbuys_by_user():
-    data = request.get_json()
+def get_groupbuys_by_user(user_id):
+    try:
+        # Query to get group buys the user has participated in, including the host's name
+        query = db.session.query(Groupbuy, User.name).\
+            join(Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id).\
+            join(Participant, Listing.listing_id == Participant.listing_id).\
+            join(User, Groupbuy.user_id == User.user_id).\
+            filter(Participant.user_id == user_id)
+        
+        # Fetch all group buys
+        groupbuys = query.all()
+        
+        # Convert group buys to a list of dictionaries for JSON serialization, including the host's name
+        groupbuys_list = [{'groupbuy_id': gb.groupbuy_id, 'title': gb.title, 'description': gb.description, 'host_name': host_name} for gb, host_name in groupbuys]
+        
+        return jsonify(groupbuys_list)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    if not data or 'user_id' not in data:
-        return jsonify({'error': 'user_id is required'}), 400
-
-    user_id = data.get('user_id')
-
-    # Query to join Participant, Listing, and Groupbuy tables
-    groupbuys = db.session.query(
-        Groupbuy.groupbuy_id,
-        Groupbuy.title,
-        Groupbuy.description,
-        Groupbuy.start_date,
-        Groupbuy.end_date
-    ).join(
-        Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
-    ).join(
-        Participant, Listing.listing_id == Participant.listing_id
-    ).filter(
-        Participant.user_id == user_id
-    ).all()
-
-    # Convert the query result to a list of dictionaries
-    groupbuys_list = [
-        {
-            'groupbuy_id': groupbuy.groupbuy_id,
-            'title': groupbuy.title,
-            'description': groupbuy.description,
-            'start_date': groupbuy.start_date,
-            'end_date': groupbuy.end_date
-        } for groupbuy in groupbuys
-    ]
-
-    return jsonify(groupbuys_list)
 
 @app.route('/participations/user/<int:user_id>', methods=['GET'])
 @jwt_required()

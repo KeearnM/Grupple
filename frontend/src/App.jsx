@@ -5,14 +5,14 @@ import GroupbuyDisplay from "./components/GroupbuyDisplay";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import ProductDetails from "./components/ProductDetails";
+import GroupbuyDetails from "./pages/GroupbuyDetails";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/details/:id" element={<ProductDetails />} />
+        <Route path="/details/:id" element={<GroupbuyDetails />} />
       </Routes>
     </Router>
   );
