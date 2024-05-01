@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../components/UserContext";
+import styles from "./JoinedBuys.module.css";
 
 const JoinedBuys = () => {
   const { accessCode, setAccessCode, userId, setUserId } =
@@ -37,24 +38,35 @@ const JoinedBuys = () => {
   }, [joined]); // This useEffect will run whenever `joined` changes
 
   return (
-    <div>
+    <>
       <div>Welcome back! Here are your joined group buys!</div>
-      <div>
-        {joined.map((e) => {
-          return (
-            <div>
-              <div>{e.title}</div>
-              <div>Hosted by: {e.host_name}</div>
-            </div>
-          );
-        })}
+      <div className={styles.JoinedBuy}>
+        <div className={styles.cardWrap}>
+          {joined.map((e) => {
+            return (
+              <div className={styles.card} key={e.groupbuy_id}>
+                <div className={styles.imageWrap}>
+                  <img
+                    src="https://i.ibb.co/kBPKGNQ/alex-lvrs-m-Tw-Ge-Pu-RUE-unsplash.jpg"
+                    alt="alex-lvrs-m-Tw-Ge-Pu-RUE-unsplash"
+                    border="0"
+                  />
+                </div>
+                <div className={styles.cardInfo}>
+                  <div className={styles.title}>{e.title}</div>
+                  <div>Hosted by: {e.host_name}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          onClick={() => {
+            console.log(joined);
+          }}
+        ></button>
       </div>
-      <button
-        onClick={() => {
-          console.log(joined);
-        }}
-      ></button>
-    </div>
+    </>
   );
 };
 
