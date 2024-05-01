@@ -10,12 +10,16 @@ const Navbar = (props) => {
 
   return (
     <div className={styles.Navbar}>
-      <Link to={`/`}></Link>
-      <img src={logo} className={styles.logoImg}></img>
+      <Link to={`/`}>
+        <img src={logo} className={styles.logoImg}></img>
+      </Link>
       <div className={styles.leftDivWrapper}>
         {props.accessCode ? (
           <>
-            <div className={styles.NavItem}>Host Page</div>
+            <Link to={`/host/${userId}`}>
+              <div className={styles.NavItem}>Host Page</div>
+            </Link>
+            {/* <div className={styles.NavItem}>Host Page</div> */}
             <div className={styles.NavItem}>Profile</div>
             <button className={styles.Button} onClick={() => setAccessCode("")}>
               Sign Out

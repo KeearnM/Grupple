@@ -39,7 +39,9 @@ const JoinedBuys = () => {
 
   return (
     <>
-      <div>Welcome back! Here are your joined group buys!</div>
+      <div className="sectionHeaders">
+        Welcome back! Here are your joined group buys!
+      </div>
       <div className={styles.JoinedBuy}>
         <div className={styles.cardWrap}>
           {joined.map((e) => {

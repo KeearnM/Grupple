@@ -22,10 +22,7 @@ const Home = () => {
           <img className="BannerImage" src={banner}></img>
         </div>
       )}
-      {/* <div className="Banner">
-        <img className="BannerImage" src={banner}></img>
-      </div> */}
-      <div>Take a look at the group buys!</div>
+      <div className="sectionHeaders">Take a look at the group buys!</div>
       <GroupbuyDisplay></GroupbuyDisplay>
       {isModalOpen && <Modal onClose={() => setModalOpen(false)}></Modal>}
       {/* <button onClick={() => setModalOpen(true)}>Open Login Modal</button>
