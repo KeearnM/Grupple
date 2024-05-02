@@ -1,3 +1,4 @@
+// ListingInput.js
 import React, { useContext, useState } from "react";
 import { UserContext } from "../components/UserContext";
 
@@ -32,6 +33,7 @@ const ListingInput = (props) => {
 
       const data = await response.json();
       console.log("Success:", data);
+      props.toggleRefetch();
     } catch (error) {
       console.error("Error:", error);
     }

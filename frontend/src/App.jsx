@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import GroupbuyDetails from "./pages/GroupbuyDetails";
 import HostPage from "./pages/HostPage";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/details/:id" element={<GroupbuyDetails />} />
         <Route path="/host/:id" element={<HostPage />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </Router>
   );

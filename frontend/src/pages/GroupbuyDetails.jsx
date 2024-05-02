@@ -18,7 +18,7 @@ const GroupbuyDetails = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(host_url + `groupbuy/${groupbuyId}`);
+      const res = await fetch(host_url + `groupbuy/detail/${groupbuyId}`);
       const data = await res.json();
       setGroupbuy(data);
       console.log(groupbuy); // This might still log the initial state

@@ -20,7 +20,9 @@ const Navbar = (props) => {
               <div className={styles.NavItem}>Host Page</div>
             </Link>
             {/* <div className={styles.NavItem}>Host Page</div> */}
-            <div className={styles.NavItem}>Profile</div>
+            <Link to={`/profile/${userId}`}>
+              <div className={styles.NavItem}>Profile</div>
+            </Link>
             <button className={styles.Button} onClick={() => setAccessCode("")}>
               Sign Out
             </button>

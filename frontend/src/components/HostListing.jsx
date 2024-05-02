@@ -6,6 +6,8 @@ import ListingInput from "./ListingInput";
 
 const HostListing = (props) => {
   const [listings, setListings] = useState({ product_names: [] });
+  const [refetch, setRefetch] = useState(false);
+  const [showListingInput, setShowListingInput] = useState(false);
 
   const { accessCode, setAccessCode, userId, setUserId } =
     useContext(UserContext);
@@ -35,6 +37,19 @@ const HostListing = (props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [refetch]);
+
+  // Function to update listings
+  const toggleRefetch = () => {
+    setRefetch(!refetch);
+  };
+
+  const toggleListingInput = () => {
+    setShowListingInput(!showListingInput);
+  };
+
   return (
     <div className={styles.groupbuy}>
       <div className={styles.title}>{props.hostBuys.title}</div>
@@ -46,9 +61,16 @@ const HostListing = (props) => {
           return <div className={styles.listing}>{e}</div>;
         })}
       </div>
-      <button className={styles.detailButton}>Add Listings</button>
+      <button className={styles.detailButton} onClick={toggleListingInput}>
+        Add Listings
+      </button>
       <button className={styles.detailButton}>More Groupbuy Details</button>
-      <ListingInput groupbuy_id={props.hostBuys.groupbuy_id}></ListingInput>
+      {showListingInput && ( // Conditionally render ListingInput
+        <ListingInput
+          groupbuy_id={props.hostBuys.groupbuy_id}
+          toggleRefetch={toggleRefetch}
+        />
+      )}
     </div>
   );
 };

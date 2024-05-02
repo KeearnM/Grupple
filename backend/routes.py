@@ -279,11 +279,12 @@ def get_participations_by_user(user_id):
             'amount': participation.amount,
             'payment': participation.payment,
             'groupbuy_title': participation.listing.groupbuy.title,
-            # Add other fields as needed
+            'product_name': participation.listing.product_name,
         } for participation in participations
     ]
 
     return jsonify(participations_list)
+
 
 @app.route('/groupbuy/<int:groupbuy_id>/listings')
 @jwt_required
@@ -297,7 +298,7 @@ def get_groupbuy_listings(groupbuy_id):
 
     return jsonify(listings)
 
-@app.route('/groupbuy/<int:groupbuy_id>', methods=['GET'])
+@app.route('/groupbuy/detail/<int:groupbuy_id>', methods=['GET'])
 def get_groupbuy(groupbuy_id):
     # Fetch the Groupbuy
     groupbuy = db.session.query(Groupbuy).get(groupbuy_id)
