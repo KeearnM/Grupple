@@ -3,6 +3,8 @@ import { UserContext } from "../components/UserContext";
 import styles from "./HostListing.module.css";
 //@ts-ignore
 import ListingInput from "./ListingInput";
+import ModalGroupbuy from "./ModalGroupbuy";
+import { Link } from "react-router-dom";
 
 const HostListing = (props) => {
   const [listings, setListings] = useState({ product_names: [] });
@@ -21,13 +23,13 @@ const HostListing = (props) => {
         {
           headers: {
             Authorization: `Bearer ${accessCode}`,
-            "Content-Type": "application/json", // This is optional and depends on your API requirements
+            "Content-Type": "application/json",
           },
         }
       );
       const data = await res.json();
       setListings(data);
-      console.log(data); // It's better to log the fetched data directly
+      console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error); // Log the actual error for debugging
     }
@@ -64,7 +66,9 @@ const HostListing = (props) => {
       <button className={styles.detailButton} onClick={toggleListingInput}>
         Add Listings
       </button>
-      <button className={styles.detailButton}>More Groupbuy Details</button>
+      <Link to={`/summary/${props.hostBuys.groupbuy_id}`}>
+        <button className={styles.detailButton}>More Groupbuy Details</button>
+      </Link>
       {showListingInput && ( // Conditionally render ListingInput
         <ListingInput
           groupbuy_id={props.hostBuys.groupbuy_id}

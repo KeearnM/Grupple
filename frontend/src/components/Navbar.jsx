@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
-  const { accessCode, setAccessCode, userId, setUserId } =
+  const { accessCode, setAccessCode, userId, setUserId, admin, setAdmin } =
     useContext(UserContext);
 
   return (
@@ -16,10 +16,15 @@ const Navbar = (props) => {
       <div className={styles.leftDivWrapper}>
         {props.accessCode ? (
           <>
+            <Link to={`/admin`}>
+              {" "}
+              {admin && ( // Conditional rendering for the Admin div
+                <div className={styles.NavItem}>Admin</div>
+              )}
+            </Link>
             <Link to={`/host/${userId}`}>
               <div className={styles.NavItem}>Host Page</div>
             </Link>
-            {/* <div className={styles.NavItem}>Host Page</div> */}
             <Link to={`/profile/${userId}`}>
               <div className={styles.NavItem}>Profile</div>
             </Link>

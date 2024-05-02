@@ -5,10 +5,11 @@ const UserContext = createContext();
 const UserInfo = ({ children }) => {
   const [accessCode, setAccessCode] = useState("");
   const [userId, setUserId] = useState("");
+  const [admin, setAdmin] = useState("");
 
   return (
     <UserContext.Provider
-      value={{ accessCode, setAccessCode, userId, setUserId }}
+      value={{ accessCode, setAccessCode, userId, setUserId, admin, setAdmin }}
     >
       {children}
     </UserContext.Provider>

@@ -55,7 +55,7 @@ def login():
         return jsonify({"error":"Not authorised"}), 401
     
     access_token = create_access_token(identity=user.user_id)
-    return jsonify(access_token=access_token, msg="logged in", user=user.user_id),200
+    return jsonify(access_token=access_token, msg="logged in", user=user.user_id, admin=user.is_admin),200
     
 
 @app.route('/protected', methods=['GET'])
@@ -142,40 +142,12 @@ def addParticipants():
     db.session.add(new_participant)
     db.session.commit()
 
-# @app.route('/groupbuy/participants', methods=['GET'])
-# @jwt_required()
-# def getGroupbuyParticipants():
 
-#     data = request.get_json()
-
-#     groupbuy_id = data.get('groupbuy_id')
-
-#     groupbuy = Groupbuy.query.filter(Groupbuy.groupbuy_id == groupbuy_id).first()
-
-#     if groupbuy:
-#         participants = []
-#         for listing in groupbuy.listings:
-#             for participant in listing.participants:
-#                 participants.append({
-#                     'participant_id': participant.participant_id,
-#                     'amount': participant.amount,
-#                     'payment': participant.payment
-#                 })
-#         return jsonify(participants)
-#     else:
-#         return jsonify({'error': 'groupbuy not found'})
     
 
-@app.route('/groupbuy/participants', methods=['GET'])
+@app.route('/groupbuy/participants/<int:groupbuy_id>', methods=['GET']) # Use URL parameter
 @jwt_required()
-def getGroupbuyParticipants():
-    data = request.get_json()
-
-    if not data or 'groupbuy_id' not in data:
-        return jsonify({'error': 'groupbuy_id is required'}), 400
-
-    groupbuy_id = data.get('groupbuy_id')
-
+def getGroupbuyParticipants(groupbuy_id): # Add groupbuy_id as a parameter
     # Query to join Participant, User, and Listing tables
     participants = db.session.query(
         Participant.participant_id,
@@ -204,43 +176,60 @@ def getGroupbuyParticipants():
 
     return jsonify(participants_list)
 
-@app.route('/groupbuys/host/id', methods=['POST'])
+from sqlalchemy import func
+
+@app.route('/groupbuy/total/participants/<int:groupbuy_id>', methods=['GET']) # Use URL parameter
 @jwt_required()
-def get_groupbuys_by_host():
-    data = request.get_json()
-
-    if not data or 'user_id' not in data:
-        return jsonify({'error': 'user_id is required'}), 400
-
-    user_id = data.get('user_id')
-
-    # Query to join Participant, Listing, and Groupbuy tables
-    groupbuys = db.session.query(
-        Groupbuy.groupbuy_id,
-        Groupbuy.title,
-        Groupbuy.description,
-        Groupbuy.start_date,
-        Groupbuy.end_date
+def getTotalGroupbuyParticipants(groupbuy_id): # Add groupbuy_id as a parameter
+    # Query to join Participant, User, and Listing tables and calculate total amounts per product
+    total_amounts = db.session.query(
+        Listing.product_name,
+        func.sum(Participant.amount).label('total_amount')
     ).join(
-        Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
-    ).join(
-        Participant, Listing.listing_id == Participant.listing_id
+        Participant, Participant.listing_id == Listing.listing_id
     ).filter(
-        Participant.user_id == user_id
+        Listing.groupbuy_id == groupbuy_id
+    ).group_by(
+        Listing.product_name
     ).all()
 
     # Convert the query result to a list of dictionaries
-    groupbuys_list = [
+    total_amounts_list = [
         {
+            'product_name': product_name,
+            'total_amount': total_amount
+        } for product_name, total_amount in total_amounts
+    ]
+
+    return jsonify(total_amounts_list)
+
+
+
+@app.route('/groupbuys/host/id', methods=['POST'])
+@jwt_required()
+def get_groupbuys_by_host():
+    # Extract user_id from the request body
+    data = request.get_json()
+    user_id = data.get('user_id')
+    
+    # Query the Groupbuy table for rows matching the provided user_id
+    groupbuys = db.session.query(Groupbuy).filter_by(user_id=user_id).all()
+    
+    # Convert the query results into a list of dictionaries for easy JSON serialization
+    groupbuys_data = []
+    for groupbuy in groupbuys:
+        groupbuy_data = {
             'groupbuy_id': groupbuy.groupbuy_id,
             'title': groupbuy.title,
             'description': groupbuy.description,
-            'start_date': groupbuy.start_date,
-            'end_date': groupbuy.end_date
-        } for groupbuy in groupbuys
-    ]
+            'start_date': groupbuy.start_date.isoformat(),
+            'end_date': groupbuy.end_date.isoformat(),
+        }
+        groupbuys_data.append(groupbuy_data)
+    
+    # Return the results as JSON
+    return jsonify(groupbuys_data)
 
-    return jsonify(groupbuys_list)
 
 @app.route('/groupbuy/<int:user_id>', methods=['GET']) #Used in home page post login
 @jwt_required()
@@ -325,3 +314,33 @@ def get_groupbuy(groupbuy_id):
     }
 
     return jsonify(response)
+
+#User Routes
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.with_entities(User.user_id, User.name, User.is_admin).all()
+    
+    users_list = [{'user_id': user.user_id, 'name': user.name, 'admin': user.is_admin,} for user in users]
+    return jsonify(users_list)
+
+@app.route('/toggle-admin/<int:user_id>', methods=['POST'])
+def toggle_admin(user_id):
+    user = User.query.get(user_id)
+    
+    if user is None:
+        return jsonify({"error": "User not found"}), 404
+    
+    user.is_admin = not user.is_admin
+    db.session.commit()
+    return jsonify({"message": "Admin status toggled successfully"}), 200
+
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'message': 'User deleted successfully'}
+    else:
+        return {'error': 'User not found'}, 404

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
 const Login = (props) => {
-  const { accessCode, setAccessCode, userId, setUserId } =
+  const { accessCode, setAccessCode, userId, setUserId, admin, setAdmin } =
     useContext(UserContext);
 
   const [email, setEmail] = useState("");
@@ -28,6 +28,7 @@ const Login = (props) => {
       const data = await response.json();
       setAccessCode(data.access_token);
       setUserId(data.user);
+      setAdmin(data.admin);
       props.onClose();
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);

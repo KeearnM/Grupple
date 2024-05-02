@@ -1,0 +1,28 @@
+.InputWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.largeText {
+  width: 100%;
+  height: 50px;
+}
+
+.submitWrap {
+  text-align: right;
+}
+
+.submitButton {
+  padding: 15px;
+  border: none;
+  background-color: #96dbca;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.submitButton:hover {
+  background-color: #87c5b6;
+  transform: scale(1.1);
+}

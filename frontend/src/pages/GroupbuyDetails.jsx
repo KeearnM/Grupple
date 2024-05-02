@@ -11,6 +11,8 @@ const GroupbuyDetails = () => {
   const { id: groupbuyId } = useParams(); // Destructure the ID directly
 
   const [groupbuy, setGroupbuy] = useState(null); // Initialize with null
+  const [selectedListing, setSelectedListing] = useState(""); // State for selected dropdown value
+  const [numberInput, setNumberInput] = useState(""); // State for number input
 
   const host_url = import.meta.env.VITE_HOST_LINK;
 
@@ -24,6 +26,34 @@ const GroupbuyDetails = () => {
       console.log(groupbuy); // This might still log the initial state
     } catch (error) {
       console.log("Error!", error);
+    }
+  };
+
+  const participationSubmit = async () => {
+    const requestBody = {
+      amount: numberInput,
+      listing_id: selectedListing,
+      user_id: userId,
+    };
+
+    try {
+      const response = await fetch(`${host_url}participants`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessCode}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to join");
+      }
+
+      const data = await response.json();
+      console.log("Joined successfully:", data);
+    } catch (error) {
+      console.error("Error joining:", error);
     }
   };
 
@@ -42,12 +72,51 @@ const GroupbuyDetails = () => {
         <>
           <Navbar accessCode={accessCode} setModalOpen={setModalOpen}></Navbar>
           {isModalOpen && <Modal onClose={() => setModalOpen(false)}></Modal>}
-          <h1>{groupbuy.title}</h1>
-          <div>Image goes here</div>
-          <div>{groupbuy.description}</div>
-          <button onClick={() => console.log(groupbuy.listings)}>
-            Log Groupbuy
-          </button>
+          <div>
+            <h1 className="productTitle">{groupbuy.title}</h1>
+            <div className="ProductDisplay">
+              <div className="ProductImageArea">
+                <img src="https://i.ibb.co/dQcnxSr/will-breen-p-RW8jd-VMxt4-unsplash.jpg" />
+              </div>
+              <div className="ProductTextArea">
+                <p>{groupbuy.description}</p>
+                {groupbuy.listings && groupbuy.listings.length > 0 ? (
+                  <>
+                    <select
+                      value={selectedListing}
+                      onChange={(e) => setSelectedListing(e.target.value)}
+                    >
+                      <option value="">Select a product</option>
+                      {groupbuy.listings.map((item, index) => (
+                        <option key={index} value={item.listing_id}>
+                          {item.product_name}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="number"
+                      value={numberInput}
+                      onChange={(e) => setNumberInput(e.target.value)}
+                    ></input>
+                  </>
+                ) : (
+                  <p>No listings available.</p>
+                )}
+                <div className="joinButtonDiv">
+                  {accessCode ? (
+                    <button
+                      className="joinButton"
+                      onClick={participationSubmit}
+                    >
+                      Join the buy!
+                    </button>
+                  ) : (
+                    <p>Please log in to join the groupbuy!</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </>
       ) : (
         <p>Loading...</p>

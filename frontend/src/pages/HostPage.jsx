@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../components/UserContext";
 import HostListing from "../components/HostListing";
+import ModalGroupbuy from "../components/ModalGroupbuy";
 
 const HostPage = () => {
   const host_url = import.meta.env.VITE_HOST_LINK;
   const [hostBuys, setHostBuys] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const { accessCode, setAccessCode, userId, setUserId } =
     useContext(UserContext);
@@ -45,8 +47,13 @@ const HostPage = () => {
         return <HostListing hostBuys={e}></HostListing>;
       })}
       {/* {hostBuys.map((e) => {
-        return <HostListing hostBuys={hostBuys}></HostListing>;
+        return <HostL
+        isting hostBuys={hostBuys}></HostListing>;
       })} */}
+      {isModalOpen && (
+        <ModalGroupbuy onClose={() => setModalOpen(false)}></ModalGroupbuy>
+      )}
+      <button onClick={() => setModalOpen(true)}>Add Groupbuy</button>
     </div>
   );
 };
