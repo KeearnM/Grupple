@@ -10,6 +10,37 @@
 
 .title {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   color: #84718a;
+}
+
+.subHeader {
+  font-weight: bold;
+  font-size: 17px;
+  color: #96dbc3;
+}
+
+.listingWrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.listing {
+  margin: 5px;
+}
+
+.detailButton {
+  margin: 15px 10px 10px 0px;
+  padding: 7px;
+  background-color: rgb(148, 122, 150);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.detailButton:hover {
+  background-color: rgb(132, 113, 138);
+  transform: scale(1.1);
 }

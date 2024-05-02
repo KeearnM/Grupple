@@ -105,18 +105,13 @@ def addGroupBuy():
     db.session.commit()
     return jsonify(msg="group buy added")
 
-@app.route('/listings', methods=['GET'])
+@app.route('/listings/<int:groupbuy_id>', methods=['GET'])
 @jwt_required()
-def getListing():
-    
-    data = request.get_json()
-
-    groupbuy_id = data.get('groupbuy_id')
-
+def getListing(groupbuy_id):
     listings = Listing.query.filter_by(groupbuy_id=groupbuy_id)
+    product_names = [i.product_name for i in listings]
+    return jsonify(product_names=product_names)
 
-    for i in listings:
-        return jsonify(product_name=i.product_name)
     
 @app.route('/listings', methods=['PUT'])
 @jwt_required()

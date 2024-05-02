@@ -2,21 +2,20 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
 const Register = () => {
-  const { setUserId } = useContext(UserContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const host_url = import.meta.env.VITE_HOST_LINK;
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(host_url + "register", {
-        method: "POST",
+      const response = await fetch(host_url + "user", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!response.ok) {
@@ -24,7 +23,6 @@ const Register = () => {
       }
 
       const data = await response.json();
-      setUserId(data.user);
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }
@@ -34,6 +32,12 @@ const Register = () => {
     <div>
       Register
       <div>
+        Name{" "}
+        <input
+          type="password"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        ></input>
         Email{" "}
         <input
           type="email"
