@@ -20,7 +20,9 @@ body,
 }
 
 .Banner {
+  position: relative; /* Establish a positioning context */
   height: 60%;
+  width: 100%;
 }
 
 .BannerImage {
@@ -29,10 +31,43 @@ body,
   object-fit: cover;
 }
 
+.bannerOverlay {
+  position: absolute; /* Position over the banner */
+  top: 0; /* Adjust as needed */
+  left: 0; /* Adjust as needed */
+  width: 100%; /* Adjust as needed */
+  height: 100%; /* Adjust as needed */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); /* Example overlay color with transparency */
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  color: black; /* Example text color */
+}
+
 .sectionHeaders {
   font-size: 25px;
   margin: 20px;
   color: #8c7c9c;
+}
+
+.Intro {
+  width: 30%;
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff0db;
+  color: #5c867c;
+  border-radius: 30px;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.95)
+    ),
+    url("https://i.ibb.co/5hT2wbd/preview.jpg%E2%80%9D/");
+  background-position: center;
 }
 
 @font-face {

@@ -19,14 +19,21 @@ const Home = () => {
         <JoinedBuys></JoinedBuys>
       ) : (
         <div className="Banner">
-          <img className="BannerImage" src={banner}></img>
+          <img className="BannerImage" src={banner} alt="Banner"></img>
+          <div className="bannerOverlay">
+            {/* Your overlay content goes here */}
+            <div className="Intro">
+              <h1>Welcome to Grupple!</h1>
+              Join our school of shoppers and let's school together to net the
+              best deals from the vast ocean of discounts! Dive in, swim along,
+              and let's make a splash with every purchase!{" "}
+            </div>
+          </div>
         </div>
       )}
       <div className="sectionHeaders">Take a look at the group buys!</div>
       <GroupbuyDisplay></GroupbuyDisplay>
       {isModalOpen && <Modal onClose={() => setModalOpen(false)}></Modal>}
-      {/* <button onClick={() => setModalOpen(true)}>Open Login Modal</button>
-      <div>Access Code: {accessCode}</div> */}
     </>
   );
 };

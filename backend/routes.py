@@ -209,45 +209,45 @@ def getGroupbuyParticipants():
 
     return jsonify(participants_list)
 
-# @app.route('/groupbuys/id', methods=['POST'])
-# @jwt_required()
-# def get_groupbuys_by_user():
-#     data = request.get_json()
+@app.route('/groupbuys/host/id', methods=['POST'])
+@jwt_required()
+def get_groupbuys_by_host():
+    data = request.get_json()
 
-#     if not data or 'user_id' not in data:
-#         return jsonify({'error': 'user_id is required'}), 400
+    if not data or 'user_id' not in data:
+        return jsonify({'error': 'user_id is required'}), 400
 
-#     user_id = data.get('user_id')
+    user_id = data.get('user_id')
 
-#     # Query to join Participant, Listing, and Groupbuy tables
-#     groupbuys = db.session.query(
-#         Groupbuy.groupbuy_id,
-#         Groupbuy.title,
-#         Groupbuy.description,
-#         Groupbuy.start_date,
-#         Groupbuy.end_date
-#     ).join(
-#         Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
-#     ).join(
-#         Participant, Listing.listing_id == Participant.listing_id
-#     ).filter(
-#         Participant.user_id == user_id
-#     ).all()
+    # Query to join Participant, Listing, and Groupbuy tables
+    groupbuys = db.session.query(
+        Groupbuy.groupbuy_id,
+        Groupbuy.title,
+        Groupbuy.description,
+        Groupbuy.start_date,
+        Groupbuy.end_date
+    ).join(
+        Listing, Groupbuy.groupbuy_id == Listing.groupbuy_id
+    ).join(
+        Participant, Listing.listing_id == Participant.listing_id
+    ).filter(
+        Participant.user_id == user_id
+    ).all()
 
-#     # Convert the query result to a list of dictionaries
-#     groupbuys_list = [
-#         {
-#             'groupbuy_id': groupbuy.groupbuy_id,
-#             'title': groupbuy.title,
-#             'description': groupbuy.description,
-#             'start_date': groupbuy.start_date,
-#             'end_date': groupbuy.end_date
-#         } for groupbuy in groupbuys
-#     ]
+    # Convert the query result to a list of dictionaries
+    groupbuys_list = [
+        {
+            'groupbuy_id': groupbuy.groupbuy_id,
+            'title': groupbuy.title,
+            'description': groupbuy.description,
+            'start_date': groupbuy.start_date,
+            'end_date': groupbuy.end_date
+        } for groupbuy in groupbuys
+    ]
 
-#     return jsonify(groupbuys_list)
+    return jsonify(groupbuys_list)
 
-@app.route('/groupbuys/<int:user_id>', methods=['GET']) #Used in home page post login
+@app.route('/groupbuy/<int:user_id>', methods=['GET']) #Used in home page post login
 @jwt_required()
 def get_groupbuys_by_user(user_id):
     try:

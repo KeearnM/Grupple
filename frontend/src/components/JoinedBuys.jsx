@@ -20,7 +20,7 @@ const JoinedBuys = () => {
         },
       };
 
-      const res = await fetch(host_url + `groupbuys/${userId}`, requestOptions);
+      const res = await fetch(host_url + `groupbuy/${userId}`, requestOptions);
       const data = await res.json();
       setJoined(data);
       console.log(joined); // This might still log the initial state
@@ -34,8 +34,8 @@ const JoinedBuys = () => {
   }, []);
 
   useEffect(() => {
-    console.log(joined); // Log the updated state here
-  }, [joined]); // This useEffect will run whenever `joined` changes
+    console.log(joined);
+  }, [joined]);
 
   return (
     <>
