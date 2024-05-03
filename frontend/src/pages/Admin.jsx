@@ -92,7 +92,7 @@ const Admin = () => {
 
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar accessCode={accessCode}></Navbar>
       <div className="AdminDiv">
         <h1>Admin Dashboard</h1>
         <table>

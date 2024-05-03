@@ -15,9 +15,9 @@ const GroupbuyCard = (props) => {
         <div className={styles.collectionPoint}>Collection Point: None</div>
         <div className={styles.user}>Hosted by {props.groupbuy.user_name}</div>
       </div>
-      <div>
+      <div className="viewWrapper">
         <Link to={`/details/${props.groupbuy.groupbuy_id}`}>
-          <button>View More</button>
+          <button className={styles.viewButton}>View More</button>
         </Link>
       </div>
     </div>

@@ -38,21 +38,23 @@ const Profile = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Navbar accessCode={accessCode}></Navbar>
-      <h1>Your joined groupbuys</h1>
-      <div>
-        {joinedBuys.map((e) => {
-          return (
-            <div>
-              <div>{e.groupbuy_title}</div>
-              <div>{e.product_name}</div>
-              <div>{e.amount}</div>
-            </div>
-          );
-        })}
+      <div className="Profile">
+        <h1>Your joined groupbuys</h1>
+        <div>
+          {joinedBuys.map((e) => {
+            return (
+              <div>
+                <div>Groupbuy Joined: {e.groupbuy_title}</div>
+                <div>Product: {e.product_name}</div>
+                <div>Number of Items: {e.amount}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

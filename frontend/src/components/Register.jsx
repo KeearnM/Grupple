@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
-const Register = () => {
+const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -23,6 +23,7 @@ const Register = () => {
       }
 
       const data = await response.json();
+      props.onClose();
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }

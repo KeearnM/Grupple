@@ -132,3 +132,30 @@ body,
   margin-left: 10%;
   margin-right: 10%;
 }
+
+.AdminDiv {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.Profile {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.purpleButton {
+  background-color: rgb(148, 122, 150);
+  color: white;
+  height: 30px;
+  width: 15%;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin: 10px;
+}
+
+.purpleButton:hover {
+  background-color: rgb(132, 113, 138);
+  transform: scale(1.1);
+}

@@ -62,11 +62,6 @@ const JoinedBuys = () => {
             );
           })}
         </div>
-        <button
-          onClick={() => {
-            console.log(joined);
-          }}
-        ></button>
       </div>
     </>
   );
