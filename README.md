@@ -6,7 +6,9 @@ Grupple is group buy management app that allows users to easily host groupbuys a
 
 ## ERD diagram for database
 
-![Grupple ERD](https://github.com/KeearnM/Grupple/assets/75174570/3f01db72-e4b5-49dd-a028-44b8e11ec42f)
+![Database Grupple](https://github.com/KeearnM/Grupple/assets/75174570/d575113a-19ad-4ba5-8c8f-bad0d4ab47b0)
+
+
 
 ## Planned Stack
  - Flask
