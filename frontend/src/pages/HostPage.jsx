@@ -40,19 +40,21 @@ const HostPage = () => {
   }, [hostBuys]);
 
   return (
-    <div>
+    <>
       <Navbar accessCode={accessCode}></Navbar>
-      <h1>Hosted Group buys</h1>
-      {hostBuys.map((e) => {
-        return <HostListing hostBuys={e}></HostListing>;
-      })}
-      {isModalOpen && (
-        <ModalGroupbuy onClose={() => setModalOpen(false)}></ModalGroupbuy>
-      )}
-      <button className="purpleButton" onClick={() => setModalOpen(true)}>
-        Add Groupbuy
-      </button>
-    </div>
+      <div className="HostPage">
+        <h1>Hosted Group buys</h1>
+        {hostBuys.map((e) => {
+          return <HostListing hostBuys={e}></HostListing>;
+        })}
+        {isModalOpen && (
+          <ModalGroupbuy onClose={() => setModalOpen(false)}></ModalGroupbuy>
+        )}
+        <button className="purpleButton" onClick={() => setModalOpen(true)}>
+          Add Groupbuy
+        </button>
+      </div>
+    </>
   );
 };
 

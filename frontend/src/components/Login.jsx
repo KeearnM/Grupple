@@ -37,7 +37,7 @@ const Login = (props) => {
 
   return (
     <div>
-      Login
+      <h3>Login</h3>
       <div>
         Email{" "}
         <input

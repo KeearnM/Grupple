@@ -5,7 +5,7 @@ from .database import Base, db
 class Groupbuy(db.Model):
     __tablename__ = 'groupbuy'
     groupbuy_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('app_user.user_id'))
+    user_id = Column(Integer, ForeignKey('app_user.user_id', ondelete='CASCADE'))
     title = Column(String(50))
     description = Column(Text)
     start_date = Column(DATE)

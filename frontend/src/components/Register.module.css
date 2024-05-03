@@ -1,0 +1,9 @@
+.Register {
+  display: flex;
+  flex-direction: column;
+}
+
+.subRegister {
+  display: flex;
+  flex-direction: column;
+}

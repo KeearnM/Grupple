@@ -159,3 +159,8 @@ body,
   background-color: rgb(132, 113, 138);
   transform: scale(1.1);
 }
+
+.HostPage {
+  margin-left: 10%;
+  margin-right: 10%;
+}

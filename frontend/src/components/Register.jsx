@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
+import styles from "./Register.module.css";
 
 const Register = (props) => {
   const [email, setEmail] = useState("");
@@ -30,28 +31,39 @@ const Register = (props) => {
   };
 
   return (
-    <div>
-      Register
-      <div>
-        Name{" "}
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></input>
-        Email{" "}
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></input>
-        Password{" "}
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-        <button onClick={handleSubmit}>Submit</button>
+    <div className={styles.Register}>
+      <h3>Register</h3>
+      <div className={styles.subRegister}>
+        <div>
+          {" "}
+          Name{" "}
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          {" "}
+          Email{"    "}
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          {" "}
+          Password{" "}
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
       </div>
     </div>
   );

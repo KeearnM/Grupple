@@ -11,6 +11,7 @@ const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { accessCode, setAccessCode, userId, setUserId } =
     useContext(UserContext);
+    
 
   return (
     <>

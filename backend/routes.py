@@ -339,8 +339,22 @@ def toggle_admin(user_id):
 def delete_user(user_id):
     user = User.query.get(user_id)
     if user:
+        groupbuys = Groupbuy.query.filter_by(user_id=user_id).all()
+        for groupbuy in groupbuys:
+            listings = Listing.query.filter_by(groupbuy_id=groupbuy.groupbuy_id).all()
+            for listing in listings:
+                Participant.query.filter_by(listing_id=listing.listing_id).delete()
+            db.session.delete(groupbuy)
+        
+        Participant.query.filter_by(user_id=user_id).delete()
+        
+        db.session.commit()
+        
         db.session.delete(user)
         db.session.commit()
-        return {'message': 'User deleted successfully'}
+        return {'message': 'User and related groupbuys, listings, and participants deleted successfully'}
     else:
         return {'error': 'User not found'}, 404
+
+
+
