@@ -48,3 +48,54 @@ In the profile page you can track the groupbuys you have joined
 
 And for the 2 images above, both function like a mini dashboard showing information about the groupbuys they have hosted
 
+## Technologies used
+
+Front End - React
+
+React was just because of familiarity but other than that React modular components was useful for some aspects of the app. The navbar component was reused for the all the pages of the app and was used to display whether the user was logged in our logged out based on the presence of the access code
+
+Back End - React with Postgres SQL, and Neon
+
+For my backend I decided to use Flask with an ORM namely SQLAlchemy, Flask is lightweight and easy to use. Frameworks and libraries are easy to use too, when JWT for authentication was required for the app I can easily just install flask_jwt_extended and use @jwt_required for all my routes to make sure the authentication was necessary to access them. Neon also make it easy to access my database as an online Postgres SQL service.
+
+## Routes used for app
+
+/user (PUT)
+
+This route create a users for our app, every user defaults to a normal user (is_admin is defaulted to false), regex is used for validating to the email format. The password is hashed in bcrypt before it is stored in the database
+
+/login (POST)
+
+This route recieve an email and password and check against the database for the email address before hashing the password in bcrypt and comparing it against the information in the database. If it matches an access code, along with the user_id and whether the user is an admin information is returned.
+
+/groupbuys (GET)
+
+This route is used on the homepage to fetch information about all the existing group buys that are available, the query fetches all the groupbuys after joining it with the user table to get the host name and also uses a filter to return group buys where the end date is later than the current date
+
+/groupbuys/:id (GET)
+
+This route is used for getting the groupbuys that the current user that is logged in the app has joined. It joins the listing, participant, user and groupbuy table and returns the information needed.
+
+/groupbuys/host/id (POST)
+
+This route is used for getting all the groupbuys the host has hosted/created it just calls the groupbuy table straght without any joins and return all the entries that matches the user_id that was submitted to it
+
+/listings/:id (GET)
+
+This route returns all the listing that is created under the groupbuy when the groupbuy_id is submitted to it, the listing is called straight without any joins as well as the table has all the information needed
+
+/listings (PUT)
+
+This adds to the listings table, it receives the groupbuy_id and the product_name in the body and adds to the listing table
+
+/groupbuys (PUT)
+
+This adds a listing into the groupbuy table when called, all the information is sent via the body and added to the table
+
+/groupbuy/participants/:id (GET)
+
+This route gets all the participants that has participated in a specific groupbuy when the groupbuy_id is submitted to it, the pacipant_id, amount, payment, name (from the user table) and the listing_name (from the listings table)
+
+/groupbuy/total/participants/:id (GET)
+
+This route returns a total of each individual listing amount linked to a groupbuy, it gives a total of each listing that was purchased by the every user that joined the groupbuy e.g (Jane - red bottle x 1 blue bottle x 1, Bob red bottle x 2 blue bottle x 1 (This is stored in the participants table) will return red bottle x 3 blue bottle x2). The route returns the information after a groupbuy_id is submitted to it
