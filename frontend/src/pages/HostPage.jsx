@@ -8,6 +8,7 @@ const HostPage = () => {
   const host_url = import.meta.env.VITE_HOST_LINK;
   const [hostBuys, setHostBuys] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   const { accessCode, setAccessCode, userId, setUserId } =
     useContext(UserContext);
@@ -31,6 +32,10 @@ const HostPage = () => {
     }
   };
 
+  const toggleRefetch = () => {
+    setRefetch(!refetch);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -38,6 +43,10 @@ const HostPage = () => {
   useEffect(() => {
     console.log(hostBuys);
   }, [hostBuys]);
+
+  useEffect(() => {
+    fetchData();
+  }, [refetch]);
 
   return (
     <>
@@ -48,7 +57,10 @@ const HostPage = () => {
           return <HostListing hostBuys={e}></HostListing>;
         })}
         {isModalOpen && (
-          <ModalGroupbuy onClose={() => setModalOpen(false)}></ModalGroupbuy>
+          <ModalGroupbuy
+            onClose={() => setModalOpen(false)}
+            toggleRefetch={toggleRefetch}
+          ></ModalGroupbuy>
         )}
         <button className="purpleButton" onClick={() => setModalOpen(true)}>
           Add Groupbuy

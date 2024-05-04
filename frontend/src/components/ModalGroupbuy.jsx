@@ -3,14 +3,19 @@ import Login from "./Login";
 import Register from "./Register"; // Assuming you have a Register component
 import GroupBuyForm from "./GroupBuyForm";
 
-function ModalGroupbuy({ children, onClose }) {
+function ModalGroupbuy({ children, onClose, toggleRefetch }) {
   const [activeTab, setActiveTab] = useState("login"); // Default to login tab
+
+  const handleClose = () => {
+    onClose();
+    toggleRefetch();
+  };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
         <GroupBuyForm onClose={onClose} />
-        <button style={styles.closeButton} onClick={onClose}>
+        <button style={styles.closeButton} onClick={handleClose}>
           X
         </button>
       </div>

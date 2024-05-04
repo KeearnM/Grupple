@@ -22,7 +22,9 @@ const Login = (props) => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const errorData = await response.json();
+        const errorMessage = errorData.error || "Network response was not ok";
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -31,7 +33,7 @@ const Login = (props) => {
       setAdmin(data.admin);
       props.onClose();
     } catch (error) {
-      console.error("There was a problem with your fetch operation:", error);
+      window.prompt("Error", error.message);
     }
   };
 

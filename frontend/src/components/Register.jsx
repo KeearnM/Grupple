@@ -20,13 +20,16 @@ const Register = (props) => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const errorData = await response.json();
+        const errorMessage = errorData.error || "Network response was not ok";
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       props.onClose();
     } catch (error) {
-      console.error("There was a problem with your fetch operation:", error);
+      // Use window.prompt to display the error message
+      window.prompt("Error", error.message);
     }
   };
 

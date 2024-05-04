@@ -114,7 +114,7 @@ def addGroupBuy():
 
     # Validate date range
     if start_date > end_date:
-        return jsonify(msg="Start date cannot be later than end date"), 400
+        return jsonify(error="Start date cannot be later than end date"), 400
 
     new_buy = Groupbuy(user_id=user_id, title=title, description=description,
                        start_date=start_date, end_date=end_date)
@@ -246,7 +246,7 @@ def get_groupbuys_by_host():
     # Extract user_id from the request body
     data = request.get_json()
 
-        # Validate required fields
+    # Validate required fields
     if not data or 'user_id' not in data:
         return jsonify({"error": "Missing 'user_id' in request body"}), 400
     

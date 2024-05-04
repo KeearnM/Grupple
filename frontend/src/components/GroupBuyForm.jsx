@@ -35,13 +35,15 @@ const GroupBuyForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create groupbuy");
+        const errorData = await response.json();
+        const errorMessage = errorData.error || "Something went wrong";
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
-      console.log("Groupbuy created successfully:", data);
+      window.prompt("Groupbuy created successfully:");
     } catch (error) {
-      console.error("Error creating groupbuy:", error);
+      window.prompt("Error creating groupbuy:", error);
     }
   };
 
