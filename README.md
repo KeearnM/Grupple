@@ -76,5 +76,26 @@ This route is used on the homepage to fetch information about all the existing g
 
 This route is used for getting the groupbuys that the current user that is logged in the app has joined. It joins the listing, participant, user and groupbuy table and returns the information needed.
 
+/groupbuys/host/id (POST)
 
+This route is used for getting all the groupbuys the host has hosted/created it just calls the groupbuy table straght without any joins and return all the entries that matches the user_id that was submitted to it
 
+/listings/:id (GET)
+
+This route returns all the listing that is created under the groupbuy when the groupbuy_id is submitted to it, the listing is called straight without any joins as well as the table has all the information needed
+
+/listings (PUT)
+
+This adds to the listings table, it receives the groupbuy_id and the product_name in the body and adds to the listing table
+
+/groupbuys (PUT)
+
+This adds a listing into the groupbuy table when called, all the information is sent via the body and added to the table
+
+/groupbuy/participants/:id (GET)
+
+This route gets all the participants that has participated in a specific groupbuy when the groupbuy_id is submitted to it, the pacipant_id, amount, payment, name (from the user table) and the listing_name (from the listings table)
+
+/groupbuy/total/participants/:id (GET)
+
+This route returns a total of each individual listing amount linked to a groupbuy, it gives a total of each listing that was purchased by the every user that joined the groupbuy e.g (Jane - red bottle x 1 blue bottle x 1, Bob red bottle x 2 blue bottle x 1 (This is stored in the participants table) will return red bottle x 3 blue bottle x2). The route returns the information after a groupbuy_id is submitted to it
