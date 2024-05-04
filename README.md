@@ -99,3 +99,19 @@ This route gets all the participants that has participated in a specific groupbu
 /groupbuy/total/participants/:id (GET)
 
 This route returns a total of each individual listing amount linked to a groupbuy, it gives a total of each listing that was purchased by the every user that joined the groupbuy e.g (Jane - red bottle x 1 blue bottle x 1, Bob red bottle x 2 blue bottle x 1 (This is stored in the participants table) will return red bottle x 3 blue bottle x2). The route returns the information after a groupbuy_id is submitted to it
+
+/participations/user/:id (GET)
+
+This route returns all the purchases a user has made when a user_id is submitted to it, it returns the amount of each item the user has bought 
+
+/toggle-admin/:id (POST)
+
+This route will change an user's is_admin to true when a user_id is submitted to it. 
+
+/allusers (GET)
+
+this route gets the information of all the users
+
+/users/:id (DELETE)
+
+this route will delete the id of the user that was submitted to it
