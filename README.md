@@ -6,8 +6,7 @@ Grupple is group buy management app that allows users to easily host groupbuys a
 
 ## ERD diagram for database
 
-![Database Grupple](https://github.com/KeearnM/Grupple/assets/75174570/d575113a-19ad-4ba5-8c8f-bad0d4ab47b0)
-
+![Grupple DB ](https://github.com/KeearnM/Grupple/assets/75174570/65330f29-09c5-475c-94ec-4b6b3f2ac03c)
 
 
 ## Planned Stack
@@ -138,3 +137,17 @@ this route gets the information of all the users
 /users/:id (DELETE)
 
 this route will delete the id of the user that was submitted to it
+
+
+## ERD Diagram
+
+Below a simple diagram showing up my components is nested in the front end
+![Grupple ERD-2](https://github.com/KeearnM/Grupple/assets/75174570/c1e8bc6e-4b6b-4ccf-99ff-b5a0525de321)
+
+
+## Next Steps and Planned future enhancements
+
+- Messaging Inbox
+- Better and more detailed summary pages for the group pages which allows the host to better see the information
+- Location based recommendations page for the user
+  
