@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from .models.database import db
 from .app import app, bcrypt, jwt
 import re
+from datetime import datetime
 
 @app.route('/')
 def check():
@@ -82,7 +83,7 @@ def protected():
 @app.route('/groupbuys', methods=['GET']) #Used in home page
 def getAllGroupbuys():
     # Perform a join operation to fetch Groupbuy and related User data
-    allBuys = db.session.query(Groupbuy, User.name).join(User, Groupbuy.user_id == User.user_id).all()
+    allBuys = db.session.query(Groupbuy, User.name).join(User, Groupbuy.user_id == User.user_id).filter(Groupbuy.end_date > datetime.utcnow()).all()
 
     if allBuys:
         groupbuys = []
