@@ -15,6 +15,18 @@ Grupple is group buy management app that allows users to easily host groupbuys a
  - Postgres
  - React
 
+## Setup
+
+### Backend:
+
+#### if using local SQL database (Current Database is hosted online)
+pip install -r requirements.txt
+
+run - {localhost}/seed in postman
+e.g http://127.0.0.1:5000/seed
+
+the api route/command above will create all the tables in the database
+
 ## Screenshots
 
 ### Pre login home page
