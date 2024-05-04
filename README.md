@@ -15,7 +15,18 @@ Grupple is group buy management app that allows users to easily host groupbuys a
  - Postgres
  - React
 
-## Setup
+## Setup and Environment
+
+### .env files
+
+#### backend
+
+DATABASE_URL=
+SECRET_KEY=
+
+#### frontend
+
+VITE_HOST_LINK='http://127.0.0.1:5000/'
 
 ### Backend:
 
