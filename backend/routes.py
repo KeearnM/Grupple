@@ -6,6 +6,7 @@ from .models.participant import Participant
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models.database import db
 from .app import app, bcrypt, jwt
+import re
 
 @app.route('/')
 def check():
@@ -32,6 +33,14 @@ def add_user():
 
     if not name or not email or not password:
         return jsonify({"error": "Missing name, email, or password"}), 400
+    
+        # Validate email format
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return jsonify({"error": "Invalid email format"}), 400
+    
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({"error": "Email already in use"}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -49,6 +58,10 @@ def login():
     
     email = data.get('email')
     password = data.get('password')
+
+    # Validate email format
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return jsonify({"error": "Invalid email format"}), 400
 
     user = User.query.filter_by(email=email).first()
     if not user or not bcrypt.check_password_hash(user.password, password):
@@ -99,6 +112,10 @@ def addGroupBuy():
     start_date = data.get('start_date')
     end_date = data.get('end_date')
 
+    # Validate date range
+    if start_date > end_date:
+        return jsonify(msg="Start date cannot be later than end date"), 400
+
     new_buy = Groupbuy(user_id=user_id, title=title, description=description,
                        start_date=start_date, end_date=end_date)
     db.session.add(new_buy)
@@ -118,6 +135,10 @@ def getListing(groupbuy_id):
 def addListing():
 
     data = request.get_json()
+
+    # Check for required fields
+    if not all(key in data for key in ['groupbuy_id', 'product_name']):
+        return jsonify({"error": "Missing required fields"}), 400
     
     groupbuy_id = data.get('groupbuy_id')
     product_name = data.get('product_name')
@@ -133,10 +154,24 @@ def addParticipants():
 
     data = request.get_json()
 
-    amount = data.get('amount')
-    listing_id = data.get('listing_id')
-    user_id = data.get('user_id')
-    payment = data.get('payment', False)
+    # Check for required fields
+    if not all(key in data for key in ['amount', 'listing_id', 'user_id']):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    # Validate data types
+    try:
+        amount = float(data.get('amount'))
+        listing_id = int(data.get('listing_id'))
+        user_id = int(data.get('user_id'))
+        payment = bool(data.get('payment', False))
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid data types"}), 400
+
+    # Check if listing_id and user_id exist
+    existing_listing = Listing.query.get(listing_id)
+    existing_user = User.query.get(user_id)
+    if not existing_listing or not existing_user:
+        return jsonify({"error": "Listing ID or User ID does not exist"}), 400
 
     new_participant = Participant(amount=amount, listing_id=listing_id, user_id=user_id, payment=payment)
     db.session.add(new_participant)
@@ -210,6 +245,11 @@ def getTotalGroupbuyParticipants(groupbuy_id): # Add groupbuy_id as a parameter
 def get_groupbuys_by_host():
     # Extract user_id from the request body
     data = request.get_json()
+
+        # Validate required fields
+    if not data or 'user_id' not in data:
+        return jsonify({"error": "Missing 'user_id' in request body"}), 400
+    
     user_id = data.get('user_id')
     
     # Query the Groupbuy table for rows matching the provided user_id
@@ -355,6 +395,3 @@ def delete_user(user_id):
         return {'message': 'User and related groupbuys, listings, and participants deleted successfully'}
     else:
         return {'error': 'User not found'}, 404
-
-
-

@@ -14,8 +14,8 @@
 .Button {
   background-color: rgb(148, 122, 150);
   color: white;
-  height: 50%;
-  width: 10%;
+  height: 30px;
+  width: 80px;
   border: none;
   border-radius: 10px;
   cursor: pointer;

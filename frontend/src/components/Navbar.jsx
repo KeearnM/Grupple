@@ -28,9 +28,19 @@ const Navbar = (props) => {
             <Link to={`/profile/${userId}`}>
               <div className={styles.NavItem}>Profile</div>
             </Link>
-            <button className={styles.Button} onClick={() => setAccessCode("")}>
+            <Link to={`/`}>
+              <div>
+                <button
+                  className={styles.Button}
+                  onClick={() => setAccessCode("")}
+                >
+                  Sign Out
+                </button>
+              </div>
+            </Link>
+            {/* <button className={styles.Button} onClick={() => setAccessCode("")}>
               Sign Out
-            </button>
+            </button> */}
           </>
         ) : (
           // Elements to show when access code is present
