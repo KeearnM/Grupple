@@ -21,8 +21,8 @@ Grupple is group buy management app that allows users to easily host groupbuys a
 
 #### backend
 
-DATABASE_URL=
-SECRET_KEY=
+##### DATABASE_URL=
+##### SECRET_KEY=
 
 #### frontend
 
