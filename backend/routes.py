@@ -358,27 +358,60 @@ def get_groupbuy(groupbuy_id):
 
 #User Routes
 
-@app.route('/users', methods=['GET'])
+@app.route('/allusers', methods=['GET'])
+@jwt_required()
 def get_users():
     users = User.query.with_entities(User.user_id, User.name, User.is_admin).all()
     
     users_list = [{'user_id': user.user_id, 'name': user.name, 'admin': user.is_admin,} for user in users]
     return jsonify(users_list)
 
-@app.route('/toggle-admin/<int:user_id>', methods=['POST'])
-def toggle_admin(user_id):
-    user = User.query.get(user_id)
+@app.route('/toggle-admin/<int:target_user_id>', methods=['POST'])
+@jwt_required()
+def toggle_admin(target_user_id):
+    data = request.get_json()
+    requesting_user_id = data.get('user_id')
+
+    if not requesting_user_id:
+        return jsonify({"error": "Missing 'user_id' in request body"}), 400
+
+    # Query the User table for the requesting user
+    requesting_user = User.query.get(requesting_user_id)
+
+    # Check if the requesting user is an admin
+    if not requesting_user or not requesting_user.is_admin:
+        return jsonify({"error": "Unauthorized to perform this action"}), 403
+
+    # Query the User table for the user to be toggled
+    target_user = User.query.get(target_user_id)
+
+    if target_user is None:
+        return jsonify({"error": "Target user not found"}), 404
     
-    if user is None:
-        return jsonify({"error": "User not found"}), 404
-    
-    user.is_admin = not user.is_admin
+    # Toggle the target user's admin status
+    target_user.is_admin = not target_user.is_admin
     db.session.commit()
-    return jsonify({"message": "Admin status toggled successfully"}), 200
+    return jsonify({"message": "Admin status toggled successfully for user", "user_id": target_user_id}), 200
+
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(user_id):
     user = User.query.get(user_id)
+    data = request.get_json()
+
+    requesting_user_id = data.get('user_id')
+
+    if not requesting_user_id:
+        return jsonify({"error": "Missing 'user_id' in request body"}), 400
+
+    # Query the User table for the requesting user
+    requesting_user = User.query.get(requesting_user_id)
+
+    # Check if the requesting user is an admin
+    if not requesting_user or not requesting_user.is_admin:
+        return jsonify({"error": "Unauthorized to perform this action"}), 403
+
     if user:
         groupbuys = Groupbuy.query.filter_by(user_id=user_id).all()
         for groupbuy in groupbuys:

@@ -20,7 +20,7 @@ const Admin = () => {
         },
       };
 
-      const res = await fetch(host_url + `users`, requestOptions);
+      const res = await fetch(host_url + `allusers`, requestOptions);
       const data = await res.json();
       setAllUser(data);
     } catch (error) {
@@ -36,6 +36,7 @@ const Admin = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessCode}`,
         },
+        body: JSON.stringify({ user_id: userId }),
       };
 
       const res = await fetch(host_url + `/toggle-admin/${id}`, requestOptions);
@@ -61,6 +62,7 @@ const Admin = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessCode}`,
         },
+        body: JSON.stringify({ user_id: userId }),
       };
 
       const res = await fetch(host_url + `/users/${id}`, requestOptions);
