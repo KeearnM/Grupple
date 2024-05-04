@@ -1,19 +1,55 @@
 # Grupple
 
+  * [Description](#description)
+  * [ERD diagram for database](#erd-diagram-for-database)
+  * [Planned Stack](#planned-stack)
+  * [Setup and Environment](#setup-and-environment)
+  * [Screenshots](#screenshots)
+  * [Technologies used](#technologies-used)
+  * [Routes used for app](#routes-used-for-app)
+  * [ERD Diagram](#erd-diagram)
+  * [Next Steps and Planned future enhancements](#next-steps-and-planned-future-enhancements)
+
 ## Description
 
 Grupple is group buy management app that allows users to easily host groupbuys and easily keep track of the items the participants has bought, it also allows user to browse various groupbuys that are available.
 
+## Getting Started
+
+Trello Board - https://trello.com/invite/b/pum5xYjR/ATTI094ea807c962f75e073a3f81d0f3190aB1FAD156/grupple
+
 ## ERD diagram for database
 
-![Database Grupple](https://github.com/KeearnM/Grupple/assets/75174570/d575113a-19ad-4ba5-8c8f-bad0d4ab47b0)
-
+![Grupple DB ](https://github.com/KeearnM/Grupple/assets/75174570/65330f29-09c5-475c-94ec-4b6b3f2ac03c)
 
 
 ## Planned Stack
  - Flask
  - Postgres
  - React
+
+## Setup and Environment
+
+### .env files
+
+#### backend
+
+##### DATABASE_URL=
+##### SECRET_KEY=
+
+#### frontend
+
+VITE_HOST_LINK='http://127.0.0.1:5000/'
+
+### Backend:
+
+#### if using local SQL database (Current Database is hosted online)
+pip install -r requirements.txt
+
+run - {localhost}/seed in postman
+e.g http://127.0.0.1:5000/seed
+
+the api route/command above will create all the tables in the database
 
 ## Screenshots
 
@@ -99,3 +135,33 @@ This route gets all the participants that has participated in a specific groupbu
 /groupbuy/total/participants/:id (GET)
 
 This route returns a total of each individual listing amount linked to a groupbuy, it gives a total of each listing that was purchased by the every user that joined the groupbuy e.g (Jane - red bottle x 1 blue bottle x 1, Bob red bottle x 2 blue bottle x 1 (This is stored in the participants table) will return red bottle x 3 blue bottle x2). The route returns the information after a groupbuy_id is submitted to it
+
+/participations/user/:id (GET)
+
+This route returns all the purchases a user has made when a user_id is submitted to it, it returns the amount of each item the user has bought 
+
+/toggle-admin/:id (POST)
+
+This route will change an user's is_admin to true when a user_id is submitted to it. 
+
+/allusers (GET)
+
+this route gets the information of all the users
+
+/users/:id (DELETE)
+
+this route will delete the id of the user that was submitted to it
+
+
+## ERD Diagram
+
+Below a simple diagram showing up my components is nested in the front end
+![Grupple ERD-2](https://github.com/KeearnM/Grupple/assets/75174570/c1e8bc6e-4b6b-4ccf-99ff-b5a0525de321)
+
+
+## Next Steps and Planned future enhancements
+
+- Messaging Inbox
+- Better and more detailed summary pages for the group pages which allows the host to better see the information
+- Location based recommendations page for the user
+  
