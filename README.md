@@ -17,6 +17,7 @@ Grupple is group buy management app that allows users to easily host groupbuys a
 ## Getting Started
 
 Trello Board - https://trello.com/invite/b/pum5xYjR/ATTI094ea807c962f75e073a3f81d0f3190aB1FAD156/grupple
+Deployed Link - https://grupple-qler.vercel.app
 
 ## ERD diagram for database
 
