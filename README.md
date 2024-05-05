@@ -154,7 +154,7 @@ this route gets the information of all the users
 this route will delete the id of the user that was submitted to it
 
 
-## ERD Diagram
+## React Component Diagram
 
 Below a simple diagram showing up my components is nested in the front end
 ![Grupple ERD-2](https://github.com/KeearnM/Grupple/assets/75174570/c1e8bc6e-4b6b-4ccf-99ff-b5a0525de321)
