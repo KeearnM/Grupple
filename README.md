@@ -7,7 +7,7 @@
   * [Screenshots](#screenshots)
   * [Technologies used](#technologies-used)
   * [Routes used for app](#routes-used-for-app)
-  * [ERD Diagram](#erd-diagram)
+  * [React Component Diagram](#react-component-diagram)
   * [Next Steps and Planned future enhancements](#next-steps-and-planned-future-enhancements)
 
 ## Description
