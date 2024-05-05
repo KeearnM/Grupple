@@ -23,6 +23,11 @@ Deployed Link - https://grupple-qler.vercel.app
 
 ![Grupple DB ](https://github.com/KeearnM/Grupple/assets/75174570/65330f29-09c5-475c-94ec-4b6b3f2ac03c)
 
+Clearer Version
+
+
+![ERD_2024-05-05T04_56_16 391Z](https://github.com/KeearnM/Grupple/assets/75174570/7d1ceea3-a738-4ae1-8686-4d17fe1d9038)
+
 
 ## Planned Stack
  - Flask
